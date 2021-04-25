@@ -1,26 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <ImageMapper :src="src" :map="map" />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import ImageMapper from './components/ImageMapper';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    HelloWorld,
+    ImageMapper,
+  },
+  computed: {
+    src: () => require('./assets/example.jpg'),
+    map: () => ({
+      areas: require('./assets/example.json'),
+      name: 'image-map',
+    }),
   },
 };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
