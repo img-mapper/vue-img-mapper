@@ -34,6 +34,7 @@ const drawPoly = (coords, fillColor, lineWidth, strokeColor, ctx) => {
 };
 
 export const callingFn = (shape, coords, fillColor, lineWidth, strokeColor, isAreaActive, ctx) => {
+  console.log();
   if (shape === 'rect' && isAreaActive) {
     return drawRect(coords, fillColor, lineWidth, strokeColor, ctx);
   }

@@ -60,7 +60,7 @@ export default defineComponent({
   data() {
     return {
       mapState: this.map,
-      storedMap: this.map,
+      storedMap: this.mapState,
       isRendered: false,
       imgRef: null,
       isClearFnCalled: false,
@@ -98,15 +98,15 @@ export default defineComponent({
   methods: {
     imageMouseMove,
     imageClick,
-    updateCacheMap() {
-      this.mapState = this.map;
-      this.storedMap = this.map;
-    },
     extendedArea(area) {
       const scaledCoords = this.scaleCoords(area.coords);
       const center = this.computeCenter(area);
 
       return { ...area, scaledCoords, center };
+    },
+    updateCacheMap() {
+      this.mapState = this.map;
+      this.storedMap = this.map;
     },
     getDimensions(type) {
       if (typeof this[type] === 'function') {
@@ -164,65 +164,18 @@ export default defineComponent({
       // setImgRef(img);
       this.renderPrefilledAreas();
     },
-    updateCanvas() {
-      this.ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
-      this.renderPrefilledAreas(this.map);
-    },
-    renderPrefilledAreas(mapObj = this.mapState) {
-      mapObj.areas.map(area => {
-        if (!area.preFillColor) return false;
-        callingFn(
-          area.shape,
-          this.scaleCoords(area.coords),
-          area.preFillColor,
-          area.lineWidth || this.lineWidth,
-          area.strokeColor || this.strokeColor,
-          true
-        );
-        return true;
-      });
-    },
-    scaleCoords(coords) {
-      const scale =
-        this.width && this.imgWidth && this.imgWidth > 0 ? this.width / this.imgWidth : 1;
-
-      if (this.responsive && this.parentWidth) {
-        return coords.map(coord => coord / (this.$refs.img.naturalWidth / this.parentWidth));
-      }
-      return coords.map(coord => coord * scale);
-    },
-    computeCenter(area) {
-      if (!area) return [0, 0];
-
-      const scaledCoords = this.scaleCoords(area.coords);
-
-      switch (area.shape) {
-        case 'circle':
-          return [scaledCoords[0], scaledCoords[1]];
-        case 'poly':
-        case 'rect':
-        default: {
-          const n = scaledCoords.length / 2;
-          const { y: scaleY, x: scaleX } = scaledCoords.reduce(
-            ({ y, x }, val, idx) => (!(idx % 2) ? { y, x: x + val / n } : { y: y + val / n, x }),
-            { y: 0, x: 0 }
-          );
-          return [scaleX, scaleY];
-        }
-      }
-    },
     hoverOn(area, index, event) {
       const { shape, scaledCoords, fillColor, lineWidth, strokeColor, active: isAreaActive } = area;
 
       if (this.active) {
         callingFn(
-          this.ctx,
           shape,
           scaledCoords,
           fillColor || this.fillColor,
           lineWidth || this.lineWidth,
           strokeColor || this.strokeColor,
-          isAreaActive ?? true
+          isAreaActive ?? true,
+          this.ctx
         );
       }
 
@@ -261,6 +214,54 @@ export default defineComponent({
         event.preventDefault();
         this.onClick(area, index, event);
       }
+    },
+    scaleCoords(coords) {
+      const scale =
+        this.width && this.imgWidth && this.imgWidth > 0 ? this.width / this.imgWidth : 1;
+
+      if (this.responsive && this.parentWidth) {
+        return coords.map(coord => coord / (this.$refs.img.naturalWidth / this.parentWidth));
+      }
+      return coords.map(coord => coord * scale);
+    },
+    renderPrefilledAreas(mapObj = this.mapState) {
+      mapObj.areas.map(area => {
+        if (!area.preFillColor) return false;
+        callingFn(
+          area.shape,
+          this.scaleCoords(area.coords),
+          area.preFillColor,
+          area.lineWidth || this.lineWidth,
+          area.strokeColor || this.strokeColor,
+          true,
+          this.ctx
+        );
+        return true;
+      });
+    },
+    computeCenter(area) {
+      if (!area) return [0, 0];
+
+      const scaledCoords = this.scaleCoords(area.coords);
+
+      switch (area.shape) {
+        case 'circle':
+          return [scaledCoords[0], scaledCoords[1]];
+        case 'poly':
+        case 'rect':
+        default: {
+          const n = scaledCoords.length / 2;
+          const { y: scaleY, x: scaleX } = scaledCoords.reduce(
+            ({ y, x }, val, idx) => (!(idx % 2) ? { y, x: x + val / n } : { y: y + val / n, x }),
+            { y: 0, x: 0 }
+          );
+          return [scaleX, scaleY];
+        }
+      }
+    },
+    updateCanvas() {
+      this.ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
+      this.renderPrefilledAreas(this.map);
     },
   },
 });
