@@ -21,10 +21,9 @@
     >
       <RenderAreas
         v-for="(area, index) in mapState.areas"
-        :key="index"
+        :key="area[areaKeyName] || index.toString()"
         :area="area"
         :index="index"
-        :area-key-name="areaKeyName"
         :extended-area="extendedArea"
         :hover-on="hoverOn"
         :hover-off="hoverOff"

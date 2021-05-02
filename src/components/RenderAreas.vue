@@ -1,7 +1,6 @@
 <template>
   <area
     v-if="!area.disabled"
-    :key="area[areaKeyName] || index.toString()"
     :coords="extendedArea(area).scaledCoords.join(',')"
     :shape="area.shape"
     :href="area.href"
@@ -25,10 +24,6 @@ export default {
   props: {
     area: {
       type: Object,
-      required: true,
-    },
-    areaKeyName: {
-      type: String,
       required: true,
     },
     index: {
