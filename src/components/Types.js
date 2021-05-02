@@ -11,10 +11,6 @@ export const ImageMapperDefaultProps = {
     type: String,
     default: 'id',
   },
-  containerRef: {
-    type: Object,
-    default: null,
-  },
   active: {
     type: Boolean,
     default: true,
@@ -62,10 +58,6 @@ export const ImageMapperDefaultProps = {
   toggleHighlighted: {
     type: Boolean,
     default: false,
-  },
-  rerenderProps: {
-    type: Array,
-    default: [],
   },
   responsive: {
     type: Boolean,

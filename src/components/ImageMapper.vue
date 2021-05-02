@@ -62,7 +62,6 @@ export default defineComponent({
       storedMap: this.mapState,
       isRendered: false,
       imgRef: null,
-      isClearFnCalled: false,
       ctx: null,
     };
   },
@@ -70,33 +69,26 @@ export default defineComponent({
     this.ctx = this.$refs.canvas.getContext('2d');
     this.updateCacheMap();
     this.isRendered = true;
-
-    this.$refs.container.clearHighlightedArea = () => {
-      this.mapState = this.storedMap;
-      this.isClearFnCalled = true;
-    };
-
-    if (this.containerRef) this.containerRef = this.$refs.container;
   },
   watch: {
-    isClearFnCalled() {
-      if (this.isClearFnCalled) {
-        this.isClearFnCalled = false;
-        this.initCanvas();
-      }
-    },
     parentWidth() {
       if (this.responsive) this.initCanvas();
     },
   },
   updated() {
-    this.updateCacheMap();
-    this.initCanvas();
-    this.updateCanvas();
+    if (JSON.stringify(this.mapState) === JSON.stringify(this.map)) {
+      this.updateCacheMap();
+      this.initCanvas();
+      this.updateCanvas();
+    }
   },
   methods: {
     imageMouseMove,
     imageClick,
+    clearHighlightedArea() {
+      this.mapState = this.storedMap;
+      this.initCanvas();
+    },
     extendedArea(area) {
       const scaledCoords = this.scaleCoords(area.coords);
       const center = this.computeCenter(area);
@@ -213,8 +205,7 @@ export default defineComponent({
         const updatedAreas = chosenArea.areas.map(cur =>
           cur[this.areaKeyName] === area[this.areaKeyName] ? newArea : cur
         );
-        console.log(updatedAreas);
-        this.map = { ...this.map, areas: updatedAreas };
+        this.mapState = { ...this.mapState, areas: updatedAreas };
       }
       if (this.$attrs.onClick) {
         event.preventDefault();
