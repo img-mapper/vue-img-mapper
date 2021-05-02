@@ -96,47 +96,47 @@ export const ImageMapperDefaultProps = {
   },
 
   onImageClick: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onImageMouseMove: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onClick: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onMousedown: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onMouseup: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onTouchstart: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onTouchend: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onMousemove: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onMouseenter: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onMouseleave: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
   onLoad: {
-    type: Object,
-    default: null,
+    type: Function,
+    default: () => null,
   },
 };
