@@ -1,5 +1,5 @@
 export const imageMouseMove = (event, props) => {
-  if (props.onImageMouseMove) {
+  if (props.$attrs.onImageMouseMove) {
     event.preventDefault();
     event.stopImmediatePropagation();
     props.$emit('imageMouseMove', event);
@@ -7,49 +7,49 @@ export const imageMouseMove = (event, props) => {
 };
 
 export const imageClick = (event, props) => {
-  if (props.onImageClick) {
+  if (props.$attrs.onImageClick) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    props.$emit('imageClick', event, 'hello');
+    props.$emit('imageClick', event);
   }
 };
 
-export const mouseMove = (area, index, event, props, self) => {
-  if (props.onMousemove) {
+export const mouseMove = (area, index, event, props) => {
+  if (props.$attrs.onMousemove) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    self.$emit('mousemove', area, index, event);
+    props.$emit('mousemove', area, index, event);
   }
 };
 
-export const mouseDown = (area, index, event, props, self) => {
-  if (props.onMousedown) {
+export const mouseDown = (area, index, event, props) => {
+  if (props.$attrs.onMousedown) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    self.$emit('mousedown', area, index, event);
+    props.$emit('mousedown', area, index, event);
   }
 };
 
-export const mouseUp = (area, index, event, props, self) => {
-  if (props.onMouseup) {
+export const mouseUp = (area, index, event, props) => {
+  if (props.$attrs.onMouseup) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    self.$emit('mouseup', area, index, event);
+    props.$emit('mouseup', area, index, event);
   }
 };
 
-export const touchStart = (area, index, event, props, self) => {
-  if (props.onTouchstart) {
+export const touchStart = (area, index, event, props) => {
+  if (props.$attrs.onTouchstart) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    self.$emit('touchstart', area, index, event);
+    props.$emit('touchstart', area, index, event);
   }
 };
 
-export const touchEnd = (area, index, event, props, self) => {
-  if (props.onTouchend) {
+export const touchEnd = (area, index, event, props) => {
+  if (props.$attrs.onTouchend) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    self.$emit('touchend', area, index, event);
+    props.$emit('touchend', area, index, event);
   }
 };

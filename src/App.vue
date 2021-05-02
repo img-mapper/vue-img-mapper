@@ -1,19 +1,5 @@
 <template>
-  <ImageMapper
-    :src="src"
-    :map="map"
-    @imageClick="handleImageClick"
-    @imageMouseMove="handleImageMouseMove"
-    @click="handleClick"
-    @mousedown="handleMouseDown"
-    @mouseup="handleMouseUp"
-    @touchstart="handleTouchStart"
-    @touchend="handleTouchEnd"
-    @mousemove="handleMouseMove"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
-    @load="handleLoad"
-  />
+  <ImageMapper :src="src" :map="map" @click="handleClick" />
 </template>
 
 <script>

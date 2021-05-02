@@ -7,11 +7,11 @@
     :href="area.href"
     @mouseenter="hoverOn(extendedArea(area), index, $event)"
     @mouseleave="hoverOff(extendedArea(area), index, $event)"
-    @mousemove="mouseMove(extendedArea(area), index, $event, $attrs, this)"
-    @mousedown="mouseDown(extendedArea(area), index, $event, $attrs, this)"
-    @mouseup="mouseUp(extendedArea(area), index, $event, $attrs, this)"
-    @tocuhstart="touchStart(extendedArea(area), index, $event, $attrs, this)"
-    @touchend="touchEnd(extendedArea(area), index, $event, $attrs, this)"
+    @mousemove="mouseMove(extendedArea(area), index, $event, this)"
+    @mousedown="mouseDown(extendedArea(area), index, $event, this)"
+    @mouseup="mouseUp(extendedArea(area), index, $event, this)"
+    @tocuhstart="touchStart(extendedArea(area), index, $event, this)"
+    @touchend="touchEnd(extendedArea(area), index, $event, this)"
     @click="click(extendedArea(area), index, $event)"
     alt="map"
   />
@@ -21,6 +21,7 @@
 import { mouseMove, mouseDown, mouseUp, touchStart, touchEnd } from './Events';
 
 export default {
+  inheritAttrs: false,
   props: {
     area: {
       type: Object,

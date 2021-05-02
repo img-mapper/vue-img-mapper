@@ -29,7 +29,7 @@
         :hover-on="hoverOn"
         :hover-off="hoverOff"
         :click="click"
-        v-bind="$props"
+        v-bind="$attrs"
       />
     </map>
   </div>
@@ -154,7 +154,7 @@ export default defineComponent({
       this.ctx.fillStyle = this.fillColor;
       //ctx.strokeStyle = this.strokeColor;
 
-      if (this.onLoad && firstLoad) {
+      if (this.$attrs.onLoad && firstLoad) {
         this.$emit('load', this.$refs.img, {
           width: imageWidth,
           height: imageHeight,
@@ -179,7 +179,7 @@ export default defineComponent({
         );
       }
 
-      if (this.onMouseenter) {
+      if (this.$attrs.onMouseenter) {
         event.preventDefault();
         event.stopImmediatePropagation();
         this.$emit('mouseenter', area, index, event);
@@ -191,7 +191,7 @@ export default defineComponent({
         this.renderPrefilledAreas();
       }
 
-      if (this.onMouseleave) {
+      if (this.$attrs.onMouseleave) {
         event.preventDefault();
         event.stopImmediatePropagation();
         this.$emit('mouseleave', area, index, event);
@@ -217,7 +217,7 @@ export default defineComponent({
         console.log(updatedAreas);
         this.map = { ...this.map, areas: updatedAreas };
       }
-      if (this.onClick || this.$attrs.onClick1) {
+      if (this.$attrs.onClick) {
         event.preventDefault();
         event.stopImmediatePropagation();
         this.$emit('click', area, index, event);

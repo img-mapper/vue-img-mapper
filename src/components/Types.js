@@ -1,22 +1,3 @@
-export const rerenderPropsList = [
-  'src',
-  'active',
-  'disabled',
-  'width',
-  'height',
-  'imgWidth',
-  'fillColor',
-  'strokeColor',
-  'lineWidth',
-  'natural',
-  'areaKeyName',
-  'stayHighlighted',
-  'stayMultiHighlighted',
-  'toggleHighlighted',
-  'parentWidth',
-  'responsive',
-];
-
 export const ImageMapperDefaultProps = {
   src: {
     type: String,
@@ -93,50 +74,5 @@ export const ImageMapperDefaultProps = {
   parentWidth: {
     type: Number,
     default: 0,
-  },
-
-  onImageClick: {
-    type: Function,
-    default: () => null,
-  },
-  onImageMouseMove: {
-    type: Function,
-    default: () => null,
-  },
-  onClick: {
-    type: Function,
-    default: () => null,
-  },
-  onMousedown: {
-    type: Function,
-    default: () => null,
-  },
-  onMouseup: {
-    type: Function,
-    default: () => null,
-  },
-  onTouchstart: {
-    type: Function,
-    default: () => null,
-  },
-  onTouchend: {
-    type: Function,
-    default: () => null,
-  },
-  onMousemove: {
-    type: Function,
-    default: () => null,
-  },
-  onMouseenter: {
-    type: Function,
-    default: () => null,
-  },
-  onMouseleave: {
-    type: Function,
-    default: () => null,
-  },
-  onLoad: {
-    type: Function,
-    default: () => null,
   },
 };
