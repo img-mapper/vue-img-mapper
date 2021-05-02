@@ -3,10 +3,7 @@ export const imageMouseMove = (event, props) => {
 };
 
 export const imageClick = (event, props) => {
-  if (props.onImageClick) {
-    event.preventDefault();
-    props.$emit('image-click', event, 'hello');
-  }
+  if (props.onImageClick) props.$emit('image-click', event);
 };
 
 export const mouseMove = (area, index, event, props, self) => {

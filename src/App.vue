@@ -1,33 +1,64 @@
 <template>
-  <ImageMapper :src="src" :map="map" @click="handleOnClick" />
+  <ImageMapper
+    :src="src"
+    :map="map"
+    @imageClick="handleImageClick"
+    @imageMouseMove="handleImageMouseMove"
+    @click="handleClick"
+    @mousedown="handleMouseDown"
+    @mouseup="handleMouseUp"
+    @touchstart="handleTouchStart"
+    @touchend="handleTouchEnd"
+    @mousemove="handleMouseMove"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
+    @load="handleLoad"
+  />
 </template>
 
 <script>
 import ImageMapper from './components/ImageMapper';
+
+const URL = 'https://raw.githubusercontent.com/img-mapper/react-docs/master/src/assets/example.jpg';
+
+const JSON =
+  'https://raw.githubusercontent.com/img-mapper/react-docs/master/src/assets/example.json';
 
 export default {
   name: 'App',
   components: {
     ImageMapper,
   },
+  data() {
+    return {
+      areas: [],
+    };
+  },
   computed: {
-    src: () => require('./assets/example.jpg'),
-    map: () => ({
-      areas: require('./assets/example.json'),
-      name: 'image-map',
-    }),
+    src: () => URL,
+    map() {
+      return {
+        areas: this.areas,
+        name: 'image-map',
+      };
+    },
+  },
+  async created() {
+    const areas = await (await fetch(JSON)).json();
+    this.areas = areas;
+    console.log(areas);
   },
   methods: {
     handleLoad(imageRef, parentDimensions) {
       console.log(imageRef, parentDimensions);
     },
-    handleOnMouseMove(area, index, event) {
-      console.log(area, index, event);
-    },
-    handleOnImageClick(event) {
+    handleImageMouseMove(event) {
       console.log(event);
     },
-    handleOnClick(area, index, event) {
+    handleImageClick(event) {
+      console.log(event);
+    },
+    handleClick(area, index, event) {
       console.log(area, index, event);
     },
     handleMouseMove(area, index, event) {

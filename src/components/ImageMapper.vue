@@ -51,10 +51,10 @@ export default defineComponent({
     containerStyle: () => container,
     canvasStyle: () => canvas,
     mapStyle() {
-      return map(this.responsive);
+      return map(this.onClick);
     },
     imgStyle() {
-      return img(this.onClick);
+      return img(this.responsive);
     },
   },
   data() {
