@@ -155,13 +155,13 @@ export default defineComponent({
       //ctx.strokeStyle = this.strokeColor;
 
       if (this.onLoad && firstLoad) {
-        this.onLoad(this.$refs.img, {
+        this.$emit('load', this.$refs.img, {
           width: imageWidth,
           height: imageHeight,
         });
       }
 
-      // setImgRef(img);
+      this.imgRef = this.$refs.img;
       this.renderPrefilledAreas();
     },
     hoverOn(area, index, event) {
@@ -179,7 +179,7 @@ export default defineComponent({
         );
       }
 
-      if (this.onMouseEnter) this.onMouseEnter(area, index, event);
+      if (this.onMouseenter) this.$emit('mouseenter', area, index, event);
     },
     hoverOff(area, index, event) {
       if (this.active) {
@@ -187,10 +187,9 @@ export default defineComponent({
         this.renderPrefilledAreas();
       }
 
-      if (this.onMouseLeave) this.onMouseLeave(area, index, event);
+      if (this.onMouseleave) this.$emit('mouseleave', area, index, event);
     },
     click(area, index, event) {
-      console.log('lol');
       const isAreaActive = area.active ?? true;
 
       if (
@@ -208,7 +207,7 @@ export default defineComponent({
           cur[this.areaKeyName] === area[this.areaKeyName] ? newArea : cur
         );
         console.log(updatedAreas);
-        // setMap(prev => ({ ...prev, areas: updatedAreas }));
+        this.map = { ...this.map, areas: updatedAreas };
       }
       if (this.onClick) {
         event.preventDefault();
@@ -220,7 +219,7 @@ export default defineComponent({
         this.width && this.imgWidth && this.imgWidth > 0 ? this.width / this.imgWidth : 1;
 
       if (this.responsive && this.parentWidth) {
-        return coords.map(coord => coord / (this.$refs.img.naturalWidth / this.parentWidth));
+        return coords.map(coord => coord / (this.imgRef.naturalWidth / this.parentWidth));
       }
       return coords.map(coord => coord * scale);
     },

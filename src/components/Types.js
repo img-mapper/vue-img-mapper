@@ -107,31 +107,31 @@ export const ImageMapperDefaultProps = {
     type: Object,
     default: null,
   },
-  onMouseDown: {
+  onMousedown: {
     type: Object,
     default: null,
   },
-  onMouseUp: {
+  onMouseup: {
     type: Object,
     default: null,
   },
-  onTouchStart: {
+  onTouchstart: {
     type: Object,
     default: null,
   },
-  onTouchEnd: {
+  onTouchend: {
     type: Object,
     default: null,
   },
-  onMouseMove: {
+  onMousemove: {
     type: Object,
     default: null,
   },
-  onMouseEnter: {
+  onMouseenter: {
     type: Object,
     default: null,
   },
-  onMouseLeave: {
+  onMouseleave: {
     type: Object,
     default: null,
   },
