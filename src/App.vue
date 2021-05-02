@@ -1,11 +1,11 @@
 <template>
   <ImageMapper
-    v-if="map.areas.length"
     :src="src"
     :map="map"
     ref="myRef"
     @click="handleClick"
-    stay-multi-highlighted
+    stay-highlighted
+    toggle-highlighted
   />
   <button type="button" @click="handleClear">Clear</button>
 </template>
@@ -15,7 +15,7 @@ import ImageMapper from './components/ImageMapper';
 
 const URL = 'https://raw.githubusercontent.com/img-mapper/react-docs/master/src/assets/example.jpg';
 
-const JSON =
+const MYJSON =
   'https://raw.githubusercontent.com/img-mapper/react-docs/master/src/assets/example.json';
 
 export default {
@@ -38,10 +38,8 @@ export default {
     },
   },
   async created() {
-    const areas = await (await fetch(JSON)).json();
-    this.areas = require('./example.json');
-    console.log(areas);
-    console.log({ ...this.areas });
+    this.areas = await (await fetch(MYJSON)).json();
+    console.log(JSON.parse(JSON.stringify(this.areas)));
   },
   methods: {
     handleClear() {

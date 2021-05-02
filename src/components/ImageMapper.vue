@@ -65,17 +65,17 @@ export default defineComponent({
       ctx: null,
     };
   },
-  mounted() {
-    this.ctx = this.$refs.canvas.getContext('2d');
-    this.updateCacheMap();
-    this.isRendered = true;
-  },
   watch: {
     parentWidth() {
       if (this.responsive) this.initCanvas();
     },
   },
   updated() {
+    if (!this.isRendered && this.map.areas.length) {
+      this.ctx = this.$refs.canvas.getContext('2d');
+      this.updateCacheMap();
+      this.isRendered = true;
+    }
     if (JSON.stringify(this.mapState) === JSON.stringify(this.map)) {
       this.updateCacheMap();
       this.initCanvas();
