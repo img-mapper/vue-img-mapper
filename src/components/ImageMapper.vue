@@ -179,7 +179,11 @@ export default defineComponent({
         );
       }
 
-      if (this.onMouseenter) this.$emit('mouseenter', area, index, event);
+      if (this.onMouseenter) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        this.$emit('mouseenter', area, index, event);
+      }
     },
     hoverOff(area, index, event) {
       if (this.active) {
@@ -187,7 +191,11 @@ export default defineComponent({
         this.renderPrefilledAreas();
       }
 
-      if (this.onMouseleave) this.$emit('mouseleave', area, index, event);
+      if (this.onMouseleave) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        this.$emit('mouseleave', area, index, event);
+      }
     },
     click(area, index, event) {
       const isAreaActive = area.active ?? true;
@@ -209,9 +217,10 @@ export default defineComponent({
         console.log(updatedAreas);
         this.map = { ...this.map, areas: updatedAreas };
       }
-      if (this.onClick) {
+      if (this.onClick || this.$attrs.onClick1) {
         event.preventDefault();
-        this.onClick(area, index, event);
+        event.stopImmediatePropagation();
+        this.$emit('click', area, index, event);
       }
     },
     scaleCoords(coords) {
