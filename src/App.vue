@@ -1,10 +1,19 @@
 <template>
-  <ImageMapper :src="src" :map="map" ref="myRef" />
-  <button type="button" @click="handleClear">Clear</button>
+  <div>
+    <ImageMapper
+      :src="src"
+      :map="map"
+      ref="myRef"
+      @mouseup="handleMouseUp"
+      @mousedown="handleMouseDown"
+      @click="handleClick"
+    />
+    <button type="button" @click="handleClear">Clear</button>
+  </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Vue, Component, Ref } from 'vue-property-decorator';
 import ImageMapper from './ImageMapper/ImageMapper.vue';
 import { Map, CustomArea, ImageEvent, AreaEvent, AreaTouchEvent } from './ImageMapper/Types';
 
@@ -12,10 +21,12 @@ const URL = 'https://raw.githubusercontent.com/img-mapper/react-docs/master/src/
 const MYJSON =
   'https://raw.githubusercontent.com/img-mapper/react-docs/master/src/assets/example.json';
 
-@Options({
+@Component({
   components: { ImageMapper },
 })
 export default class App extends Vue {
+  @Ref('myRef') readonly myRef: ImageMapper;
+
   areas: Map['areas'] = [];
 
   async created(): Promise<void> {
@@ -35,7 +46,7 @@ export default class App extends Vue {
   }
 
   handleClear(): void {
-    // this.$refs.myRef.clearHighlightedArea();
+    this.myRef.clearHighlightedArea();
   }
 
   handleLoad(

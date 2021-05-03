@@ -1,4 +1,4 @@
-import { Vue } from 'vue-class-component';
+import { Vue } from 'vue-property-decorator';
 
 export type Obj = Record<string, unknown>;
 
@@ -30,7 +30,7 @@ export type AreaTouchEvent = HTMLAreaElement & TouchEvent;
 export type AreaEvent = HTMLAreaElement & MouseEvent;
 export type ImageEvent = HTMLImageElement & MouseEvent;
 
-export interface ImageMapperProps extends Vue {
+export interface ImageMapperProps {
   src: string;
   map?: Map;
   areaKeyName?: 'id';
@@ -50,73 +50,16 @@ export interface ImageMapperProps extends Vue {
   parentWidth?: number;
 }
 
-export const ImageMapperDefaultProps = {
-  src: {
-    type: String,
-    required: true,
-  },
-  map: {
-    type: Object,
-    required: true,
-  },
-  areaKeyName: {
-    type: String,
-    default: 'id',
-  },
-  active: {
-    type: Boolean,
-    default: true,
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
-  },
-  fillColor: {
-    type: String,
-    default: 'rgba(255, 255, 255, 0.5)',
-  },
-  strokeColor: {
-    type: String,
-    default: 'rgba(0, 0, 0, 0.5)',
-  },
-  lineWidth: {
-    type: Number,
-    default: 1,
-  },
-  imgWidth: {
-    type: Number,
-    default: 0,
-  },
-  width: {
-    type: Number,
-    default: 0,
-  },
-  height: {
-    type: Number,
-    default: 0,
-  },
-  natural: {
-    type: Boolean,
-    default: false,
-  },
-  stayHighlighted: {
-    type: Boolean,
-    default: false,
-  },
-  stayMultiHighlighted: {
-    type: Boolean,
-    default: false,
-  },
-  toggleHighlighted: {
-    type: Boolean,
-    default: false,
-  },
-  responsive: {
-    type: Boolean,
-    default: false,
-  },
-  parentWidth: {
-    type: Number,
-    default: 0,
-  },
-};
+export interface ImageMapperListeners {
+  imageClick?: ((e: ImageEvent) => void) | null;
+  imageMouseMove?: ((e: ImageEvent) => void) | null;
+  click?: ((area: CustomArea, index: number, e: AreaEvent) => void) | null;
+  mousedown?: ((area: CustomArea, index: number, e: AreaEvent) => void) | null;
+  mouseup?: ((area: CustomArea, index: number, e: AreaEvent) => void) | null;
+  touchstart?: ((area: CustomArea, index: number, e: AreaTouchEvent) => void) | null;
+  touchend?: ((area: CustomArea, index: number, e: AreaTouchEvent) => void) | null;
+  mousemove?: ((area: CustomArea, index: number, e: AreaEvent) => void) | null;
+  mouseenter?: ((area: CustomArea, index: number, e: AreaEvent) => void) | null;
+  mouseleave?: ((area: CustomArea, index: number, e: AreaEvent) => void) | null;
+  load?: ((e: HTMLImageElement, dimensions: { width: number; height: number }) => void) | null;
+}

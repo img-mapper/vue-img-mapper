@@ -6,59 +6,74 @@
     :href="area.href"
     @mouseenter="hoverOn(extendedArea(area), index, $event)"
     @mouseleave="hoverOff(extendedArea(area), index, $event)"
-    @mousemove="mouseMove(extendedArea(area), index, $event, this)"
-    @mousedown="mouseDown(extendedArea(area), index, $event, this)"
-    @mouseup="mouseUp(extendedArea(area), index, $event, this)"
-    @tocuhstart="touchStart(extendedArea(area), index, $event, this)"
-    @touchend="touchEnd(extendedArea(area), index, $event, this)"
+    @mousemove="mouseMove(extendedArea(area), index, $event)"
+    @mousedown="mouseDown(extendedArea(area), index, $event)"
+    @mouseup="mouseUp(extendedArea(area), index, $event)"
+    @tocuhstart="touchStart(extendedArea(area), index, $event)"
+    @touchend="touchEnd(extendedArea(area), index, $event)"
     @click="click(extendedArea(area), index, $event)"
     alt="map"
   />
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component, { Options, mixins } from 'vue-class-component';
-import { mouseMove, mouseDown, mouseUp, touchStart, touchEnd } from './Events';
+import { Vue, Component, Prop } from 'vue-property-decorator';
+import { AreaEvent, AreaTouchEvent, CustomArea, ImageMapperListeners, MapAreas } from './Types';
 
-const extendedProps = Vue.extend({
-  props: {
-    area: {
-      type: Object,
-      required: true,
-    },
-    index: {
-      type: Number,
-      required: true,
-    },
-    extendedArea: {
-      type: Function,
-      required: true,
-    },
-    hoverOff: {
-      type: Function,
-      required: true,
-    },
-    hoverOn: {
-      type: Function,
-      required: true,
-    },
-    click: {
-      type: Function,
-      required: true,
-    },
-  },
-});
-
-@Component
-@Options({
+@Component({
   inheritAttrs: false,
 })
-export default class RenderAreas extends mixins(Vue, extendedProps) {
-  mouseMove = mouseMove;
-  mouseDown = mouseDown;
-  mouseUp = mouseUp;
-  touchStart = touchStart;
-  touchEnd = touchEnd;
+export default class RenderAreas extends Vue {
+  @Prop(Object) readonly area: MapAreas;
+  @Prop(Number) readonly index: number;
+  @Prop(Function) readonly extendedArea: (area: MapAreas) => CustomArea;
+  @Prop(Function) readonly hoverOff: (area: CustomArea, index: number, event: AreaEvent) => void;
+  @Prop(Function) readonly hoverOn: (area: CustomArea, index?: number, event?: AreaEvent) => void;
+  @Prop(Function) readonly click: (area: CustomArea, index: number, event: AreaEvent) => void;
+
+  get listeners(): ImageMapperListeners {
+    return this.$parent.$listeners;
+  }
+
+  mouseMove(area: CustomArea, index: number, event: AreaEvent): void {
+    if (this.listeners.mousemove) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.$parent.$emit('mousemove', area, index, event);
+    }
+  }
+
+  mouseDown(area: CustomArea, index: number, event: AreaEvent): void {
+    if (this.listeners.mousedown) {
+      console.log('yeh');
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.$parent.$emit('mousedown', area, index, event);
+    }
+  }
+
+  mouseUp(area: CustomArea, index: number, event: AreaEvent): void {
+    if (this.listeners.mouseup) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.$parent.$emit('mouseup', area, index, event);
+    }
+  }
+
+  touchStart(area: CustomArea, index: number, event: AreaTouchEvent): void {
+    if (this.listeners.touchstart) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.$parent.$emit('touchstart', area, index, event);
+    }
+  }
+
+  touchEnd(area: CustomArea, index: number, event: AreaTouchEvent): void {
+    if (this.listeners.touchend) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.$parent.$emit('touchend', area, index, event);
+    }
+  }
 }
 </script>

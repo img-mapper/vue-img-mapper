@@ -9,8 +9,8 @@
       alt="map"
       ref="img"
       @load="initCanvas(true)"
-      @click="imageClick($event, this)"
-      @mousemove="imageMouseMove($event, this)"
+      @click="imageClick($event)"
+      @mousemove="imageMouseMove($event)"
     />
     <canvas class="img-mapper-canvas" ref="canvas" :style="canvasStyle" />
     <map
@@ -28,43 +28,83 @@
         :hover-on="hoverOn"
         :hover-off="hoverOff"
         :click="click"
-        v-bind="$attrs"
       />
     </map>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component, { Options, mixins } from 'vue-class-component';
+import { Vue, Component, Watch, Ref, Prop } from 'vue-property-decorator';
 import { container, canvas, img, map } from './Styles';
-import { ImageMapperDefaultProps, MapAreas, Map, CustomArea, AreaEvent, Obj } from './Types';
+import {
+  MapAreas,
+  Map,
+  CustomArea,
+  AreaEvent,
+  Obj,
+  ImageEvent,
+  ImageMapperListeners,
+} from './Types';
 import RenderAreas from './RenderAreas.vue';
 import { callingFn } from './Draw';
-import { imageMouseMove, imageClick } from './Events';
 
-const extendedProps = Vue.extend({
-  props: ImageMapperDefaultProps,
-});
-
-@Component
-@Options({
+@Component({
   components: { RenderAreas },
-  watch: {
-    parentWidth() {
-      if (this.responsive) this.initCanvas();
-    },
-  },
 })
-export default class ImageMapper extends mixins(Vue, extendedProps) {
-  mapState = this.map;
-  storedMap = this.mapState;
-  isRendered = false;
-  imgRef = null;
-  ctx = null;
+export default class ImageMapper extends Vue {
+  @Prop(String) readonly src: string;
+  @Prop(Object) readonly map?: Map;
+  @Prop({ type: String, default: 'id' }) readonly areaKeyName?: string;
+  @Prop({ type: Boolean, default: true }) readonly active?: boolean;
+  @Prop({ type: Boolean, default: false }) readonly disabled?: boolean;
+  @Prop({ type: String, default: 'rgba(255, 255, 255, 0.5)' }) readonly fillColor?: string;
+  @Prop({ type: String, default: 'rgba(0, 0, 0, 0.5)' }) readonly strokeColor?: string;
+  @Prop({ type: Number, default: 1 }) readonly lineWidth?: number;
+  @Prop({ type: Number, default: 0 }) readonly imgWidth?: number;
+  @Prop({ type: Number, default: 0 }) readonly width?: number | ((e: ImageEvent) => void);
+  @Prop({ type: Number, default: 0 }) readonly height?: number | ((e: ImageEvent) => void);
+  @Prop({ type: Boolean, default: false }) readonly natural?: boolean;
+  @Prop({ type: Boolean, default: false }) readonly stayHighlighted?: boolean;
+  @Prop({ type: Boolean, default: false }) readonly stayMultiHighlighted?: boolean;
+  @Prop({ type: Boolean, default: false }) readonly toggleHighlighted?: boolean;
+  @Prop({ type: Boolean, default: false }) readonly responsive?: boolean;
+  @Prop({ type: Number, default: 0 }) readonly parentWidth?: number;
 
-  imageMouseMove = imageMouseMove;
-  imageClick = imageClick;
+  @Ref('canvas') readonly canvasRef: HTMLCanvasElement;
+  @Ref('img') readonly imgRef: HTMLImageElement;
+  @Ref('container') readonly containerRef: HTMLImageElement;
+
+  mapState: Map = { name: '', areas: [] };
+  storedMap: Map = this.mapState;
+  isRendered = false;
+  imgRefState: HTMLImageElement = null;
+  ctx: CanvasRenderingContext2D = null;
+
+  mounted() {
+    console.log(this);
+    this.ctx = this.canvasRef.getContext('2d');
+    this.updateCacheMap();
+    this.isRendered = true;
+  }
+
+  updated(): void {
+    console.log('lol', this.isRendered, this.map.areas.length, this.disabled);
+    if (JSON.stringify(this.mapState) !== JSON.stringify(this.map)) {
+      console.log('no');
+      this.updateCacheMap();
+      this.initCanvas();
+      this.updateCanvas();
+    }
+  }
+
+  @Watch('parentWidth')
+  watchParentWidth(): void {
+    if (this.responsive) this.initCanvas();
+  }
+
+  get listeners(): ImageMapperListeners {
+    return this.$listeners;
+  }
 
   get containerStyle(): Obj {
     return container;
@@ -75,24 +115,11 @@ export default class ImageMapper extends mixins(Vue, extendedProps) {
   }
 
   get mapStyle(): Obj {
-    return map(!!this.onClick);
+    return map(!!this.listeners.click);
   }
 
   get imgStyle(): Obj {
     return img(this.responsive);
-  }
-
-  updated(): void {
-    if (!this.isRendered && this.map.areas.length) {
-      this.ctx = this.$refs.canvas.getContext('2d');
-      this.updateCacheMap();
-      this.isRendered = true;
-    }
-    if (JSON.stringify(this.mapState) === JSON.stringify(this.map)) {
-      this.updateCacheMap();
-      this.initCanvas();
-      this.updateCanvas();
-    }
   }
 
   clearHighlightedArea(): void {
@@ -114,13 +141,14 @@ export default class ImageMapper extends mixins(Vue, extendedProps) {
 
   getDimensions(type: 'width' | 'height'): number {
     if (typeof this[type] === 'function') {
-      return this[type](this.$refs.img);
+      // @ts-ignore
+      return this[type](this.imgRef);
     }
-    return this[type];
+    return this[type] as number;
   }
 
   getValues(type: string, measure: number, name = 'area'): number {
-    const { naturalWidth, naturalHeight, clientWidth, clientHeight } = this.$refs.img;
+    const { naturalWidth, naturalHeight, clientWidth, clientHeight } = this.imgRef;
 
     if (type === 'width') {
       if (this.responsive) return this.parentWidth;
@@ -144,31 +172,47 @@ export default class ImageMapper extends mixins(Vue, extendedProps) {
     const imageHeight = this.getValues('height', imgHeight);
 
     if (this.width || this.responsive) {
-      this.$refs.img.width = this.getValues('width', imgWidth, 'image');
+      this.imgRef.width = this.getValues('width', imgWidth, 'image');
     }
 
     if (this.height || this.responsive) {
-      this.$refs.img.height = this.getValues('height', imgHeight, 'image');
+      this.imgRef.height = this.getValues('height', imgHeight, 'image');
     }
 
-    this.$refs.canvas.width = imageWidth;
-    this.$refs.canvas.height = imageHeight;
-    this.$refs.container.style.width = `${imageWidth}px`;
-    this.$refs.container.style.height = `${imageHeight}px`;
+    this.canvasRef.width = imageWidth;
+    this.canvasRef.height = imageHeight;
+    this.containerRef.style.width = `${imageWidth}px`;
+    this.containerRef.style.height = `${imageHeight}px`;
 
-    this.ctx = this.$refs.canvas.getContext('2d');
+    this.ctx = this.canvasRef.getContext('2d');
     this.ctx.fillStyle = this.fillColor;
     //ctx.strokeStyle = this.strokeColor;
 
-    if (this.$attrs.onLoad && firstLoad) {
-      this.$emit('load', this.$refs.img, {
+    if (this.listeners.load && firstLoad) {
+      this.$emit('load', this.imgRef, {
         width: imageWidth,
         height: imageHeight,
       });
     }
 
-    this.imgRef = this.$refs.img;
+    this.imgRefState = this.imgRef;
     this.renderPrefilledAreas();
+  }
+
+  imageMouseMove(event: ImageEvent): void {
+    if (this.listeners.imageMouseMove) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.$emit('imageMouseMove', event);
+    }
+  }
+
+  imageClick(event: ImageEvent): void {
+    if (this.listeners.imageClick) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.$emit('imageClick', event);
+    }
   }
 
   hoverOn(area: CustomArea, index?: number, event?: AreaEvent): void {
@@ -186,7 +230,7 @@ export default class ImageMapper extends mixins(Vue, extendedProps) {
       );
     }
 
-    if (this.$attrs.onMouseenter) {
+    if (this.listeners.mouseenter) {
       event.preventDefault();
       event.stopImmediatePropagation();
       this.$emit('mouseenter', area, index, event);
@@ -195,11 +239,11 @@ export default class ImageMapper extends mixins(Vue, extendedProps) {
 
   hoverOff(area: CustomArea, index: number, event: AreaEvent): void {
     if (this.active) {
-      this.ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
+      this.ctx.clearRect(0, 0, this.canvasRef.width, this.canvasRef.height);
       this.renderPrefilledAreas();
     }
 
-    if (this.$attrs.onMouseleave) {
+    if (this.listeners.mouseleave) {
       event.preventDefault();
       event.stopImmediatePropagation();
       this.$emit('mouseleave', area, index, event);
@@ -221,11 +265,11 @@ export default class ImageMapper extends mixins(Vue, extendedProps) {
         newArea.preFillColor = area.fillColor || this.fillColor;
       }
       const updatedAreas = chosenArea.areas.map(cur =>
-        cur[this.areaKeyName] === area[this.areaKeyName] ? newArea : cur
+        cur[this.areaKeyName as 'id'] === area[this.areaKeyName as 'id'] ? newArea : cur
       );
       this.mapState = { ...this.mapState, areas: updatedAreas };
     }
-    if (this.$attrs.onClick) {
+    if (this.listeners.click) {
       event.preventDefault();
       event.stopImmediatePropagation();
       this.$emit('click', area, index, event);
@@ -233,10 +277,11 @@ export default class ImageMapper extends mixins(Vue, extendedProps) {
   }
 
   scaleCoords(coords: []): number[] {
-    const scale = this.width && this.imgWidth && this.imgWidth > 0 ? this.width / this.imgWidth : 1;
+    const scale =
+      this.width && this.imgWidth && this.imgWidth > 0 ? (this.width as number) / this.imgWidth : 1;
 
     if (this.responsive && this.parentWidth) {
-      return coords.map(coord => coord / (this.imgRef.naturalWidth / this.parentWidth));
+      return coords.map(coord => coord / (this.imgRefState.naturalWidth / this.parentWidth));
     }
     return coords.map(coord => coord * scale);
   }
@@ -279,7 +324,7 @@ export default class ImageMapper extends mixins(Vue, extendedProps) {
   }
 
   updateCanvas(): void {
-    this.ctx.clearRect(0, 0, this.$refs.canvas.width, this.$refs.canvas.height);
+    this.ctx.clearRect(0, 0, this.canvasRef.width, this.canvasRef.height);
     this.renderPrefilledAreas(this.map);
   }
 }
