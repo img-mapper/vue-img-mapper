@@ -1,17 +1,10 @@
 <template>
-  <ImageMapper
-    :src="src"
-    :map="map"
-    ref="myRef"
-    @click="handleClick"
-    stay-highlighted
-    toggle-highlighted
-  />
+  <ImageMapper :src="src" :map="map" />
   <button type="button" @click="handleClear">Clear</button>
 </template>
 
 <script>
-import ImageMapper from './components/ImageMapper';
+import ImageMapper from './ImageMapper/ImageMapper';
 
 const URL = 'https://raw.githubusercontent.com/img-mapper/react-docs/master/src/assets/example.jpg';
 
