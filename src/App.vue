@@ -1,12 +1,15 @@
 <template>
   <div>
     <ImageMapper
+      v-if="areas.length"
       :src="src"
       :map="map"
       ref="myRef"
-      @mouseup="handleMouseUp"
-      @mousedown="handleMouseDown"
       @click="handleClick"
+      @load="handleLoad"
+      stay-highlighted
+      stay-multi-highlighted
+      toggle-highlighted
     />
     <button type="button" @click="handleClear">Clear</button>
   </div>
@@ -65,8 +68,7 @@ export default class App extends Vue {
   }
 
   handleClick(area: CustomArea, index: number, event: AreaEvent): void {
-    // console.log(area instanceof MouseEvent);
-    console.log(area, index, event);
+    // console.log(area, index, event);
   }
 
   handleMouseMove(area: CustomArea, index: number, event: AreaEvent): void {

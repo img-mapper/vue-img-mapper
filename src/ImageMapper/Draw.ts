@@ -62,7 +62,6 @@ export const callingFn = (
   isAreaActive: boolean,
   ctx: CTX
 ): void | boolean => {
-  console.log();
   if (shape === 'rect' && isAreaActive) {
     return drawRect(coords, fillColor, lineWidth, strokeColor, ctx);
   }

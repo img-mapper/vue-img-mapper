@@ -45,7 +45,6 @@ export default class RenderAreas extends Vue {
 
   mouseDown(area: CustomArea, index: number, event: AreaEvent): void {
     if (this.listeners.mousedown) {
-      console.log('yeh');
       event.preventDefault();
       event.stopImmediatePropagation();
       this.$parent.$emit('mousedown', area, index, event);

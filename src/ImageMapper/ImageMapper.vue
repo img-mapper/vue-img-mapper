@@ -80,17 +80,14 @@ export default class ImageMapper extends Vue {
   imgRefState: HTMLImageElement = null;
   ctx: CanvasRenderingContext2D = null;
 
-  mounted() {
-    console.log(this);
+  mounted(): void {
     this.ctx = this.canvasRef.getContext('2d');
     this.updateCacheMap();
     this.isRendered = true;
   }
 
   updated(): void {
-    console.log('lol', this.isRendered, this.map.areas.length, this.disabled);
-    if (JSON.stringify(this.mapState) !== JSON.stringify(this.map)) {
-      console.log('no');
+    if (JSON.stringify(this.mapState) === JSON.stringify(this.map)) {
       this.updateCacheMap();
       this.initCanvas();
       this.updateCanvas();
@@ -281,7 +278,7 @@ export default class ImageMapper extends Vue {
       this.width && this.imgWidth && this.imgWidth > 0 ? (this.width as number) / this.imgWidth : 1;
 
     if (this.responsive && this.parentWidth) {
-      return coords.map(coord => coord / (this.imgRefState.naturalWidth / this.parentWidth));
+      return coords.map(coord => coord / (this.imgRefState?.naturalWidth / this.parentWidth));
     }
     return coords.map(coord => coord * scale);
   }
