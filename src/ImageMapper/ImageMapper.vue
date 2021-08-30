@@ -1,23 +1,23 @@
 <template>
-  <div id="img-mapper" :style="containerStyle" ref="container">
+  <div id="img-mapper" ref="container" :style="containerStyle">
     <img
+      ref="img"
       role="presentation"
       class="img-mapper-img"
       :style="imgStyle"
       :src="src"
       :useMap="`#${mapState.name}`"
       alt="map"
-      ref="img"
       @load="initCanvas(true)"
       @click="imageClick($event, this)"
       @mousemove="imageMouseMove($event, this)"
     />
-    <canvas class="img-mapper-canvas" ref="canvas" :style="canvasStyle" />
+    <canvas ref="canvas" class="img-mapper-canvas" :style="canvasStyle" />
     <map
+      v-if="isRendered && !disabled"
       class="img-mapper-map"
       :name="mapState.name"
       :style="mapStyle"
-      v-if="isRendered && !disabled"
     >
       <RenderAreas
         v-for="(area, index) in mapState.areas"
@@ -46,6 +46,15 @@ export default defineComponent({
   name: 'ImageMapper',
   components: { RenderAreas },
   props: ImageMapperDefaultProps,
+  data() {
+    return {
+      mapState: this.map,
+      storedMap: this.mapState,
+      isRendered: false,
+      imgRef: null,
+      ctx: null,
+    };
+  },
   computed: {
     containerStyle: () => container,
     canvasStyle: () => canvas,
@@ -55,15 +64,6 @@ export default defineComponent({
     imgStyle() {
       return img(this.responsive);
     },
-  },
-  data() {
-    return {
-      mapState: this.map,
-      storedMap: this.mapState,
-      isRendered: false,
-      imgRef: null,
-      ctx: null,
-    };
   },
   watch: {
     parentWidth() {

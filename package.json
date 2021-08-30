@@ -1,6 +1,6 @@
 {
   "name": "vue-img-mapper",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Vue Component to highlight interactive zones in images",
   "keywords": [
     "vue",

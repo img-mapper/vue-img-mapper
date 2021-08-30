@@ -4,6 +4,7 @@
     :coords="extendedArea(area).scaledCoords.join(',')"
     :shape="area.shape"
     :href="area.href"
+    alt="map"
     @mouseenter="hoverOn(extendedArea(area), index, $event)"
     @mouseleave="hoverOff(extendedArea(area), index, $event)"
     @mousemove="mouseMove(extendedArea(area), index, $event, this)"
@@ -12,7 +13,6 @@
     @tocuhstart="touchStart(extendedArea(area), index, $event, this)"
     @touchend="touchEnd(extendedArea(area), index, $event, this)"
     @click="click(extendedArea(area), index, $event)"
-    alt="map"
   />
 </template>
 
