@@ -27,7 +27,14 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "prepublishOnly": "npm run build"
+    "pre-commit": "npx husky add .husky/pre-commit \"npx lint-staged\"",
+    "prepublishOnly": "npm run build",
+    "prepare": "npm run build && husky install"
+  },
+  "lint-staged": {
+    "*.{vue,js}": [
+      "eslint --fix"
+    ]
   },
   "dependencies": {
     "vue": "^3.2.6"
@@ -40,6 +47,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-vue": "^7.17.0",
+    "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
     "prettier": "^2.3.2",
     "vite": "^2.5.1",
