@@ -1,10 +1,44 @@
 <template>
-  <ImageMapper :src="src" :map="map" />
+  <!--<ImageMapper-->
+  <!--  :src="src"-->
+  <!--  :map="map"-->
+  <!--  active-->
+  <!--  disabled-->
+  <!--  fill-color="#ddd"-->
+  <!--  stroke-color="#ccc"-->
+  <!--  area-key-name="id"-->
+  <!--  width="500"-->
+  <!--  height="200"-->
+  <!--  img-width="240"-->
+  <!--  line-width="5"-->
+  <!--  natural-->
+  <!--  parent-width="200"-->
+  <!--  responsive-->
+  <!--  stay-highlighted-->
+  <!--  stay-multi-highlighted-->
+  <!--  toggle-highlighted-->
+  <!--  ref="myRef"-->
+  <!--  @imageMouseMove="handleImageMouseMove"-->
+  <!--  @imageClick="handleImageClick"-->
+  <!--  @load="handleLoad"-->
+  <!--  @mouseup="handleMouseUp"-->
+  <!--  @mousedown="handleMouseDown"-->
+  <!--  @click="handleClick"-->
+  <!--  @mouseenter="handleMouseEnter"-->
+  <!--  @mouseleave="handleMouseLeave"-->
+  <!--  @mousemove="handleMouseMove"-->
+  <!--  @touchstart="handleTouchStart"-->
+  <!--  @touchend="handleTouchEnd"-->
+  <!--/>-->
+  <ImageMapper
+    :src="src"
+    :map="map"
+  />
   <button type="button" @click="handleClear">Clear</button>
 </template>
 
 <script>
-import ImageMapper from './ImageMapper/ImageMapper';
+import ImageMapper from './ImageMapper/ImageMapper.vue';
 
 const URL = 'https://raw.githubusercontent.com/img-mapper/react-docs/master/src/assets/example.jpg';
 
@@ -37,7 +71,6 @@ export default {
   methods: {
     handleClear() {
       this.$refs.myRef.clearHighlightedArea();
-      // $refs.mapper.clearHighlightedArea();
     },
     handleLoad(imageRef, parentDimensions) {
       console.log(imageRef, parentDimensions);

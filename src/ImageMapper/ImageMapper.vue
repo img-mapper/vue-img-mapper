@@ -36,9 +36,9 @@
 
 <script>
 import { defineComponent } from 'vue';
+import RenderAreas from './RenderAreas.vue';
 import { container, canvas, img, map } from './Styles';
 import { ImageMapperDefaultProps } from './Types';
-import RenderAreas from './RenderAreas';
 import { callingFn } from './Draw';
 import { imageMouseMove, imageClick } from './Events';
 

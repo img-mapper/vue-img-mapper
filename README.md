@@ -2,6 +2,17 @@
 
 Vue Component to highlight interactive zones in images
 
+> This repository is based on react-img-mapper but with vue support
+
+``` 
+1. Promise to be maintained this repository
+2. Selected area will stay highlighted ( Single & Multiple ) with toggle and reset feature
+3. New Properties: Natural Dimensions, RerenderProps       
+4. Image Reference in Width, Height and onLoad function to access image properties  
+5. Responsive Image Mapper  
+6. Compatible with nuxt.js
+``` 
+
 ## Installation
 
 Package: [vue-img-mapper](https://www.npmjs.com/package/vue-img-mapper)
@@ -20,12 +31,12 @@ yarn add vue-img-mapper
 
 ## Demo & Examples
 
-Live demo: [demo](https://img-mapper.github.io/vue-docs)
+Live demo: [demo](https://img-mapper.github.io/react-docs)
 
 To run the example locally
 
 ```        
-git clone https://github.com/img-mapper/vue-docs.git
+git clone https://github.com/img-mapper/react-docs.git
 npm install        
 npm start        
 ```        
@@ -33,6 +44,8 @@ npm start
 Then open [`localhost:3000`](http://localhost:3000) in a browser.
 
 If you want to change something and want to make a build file, you just need to run `npm run build`
+
+> Currently, The documentation is in react, but I am trying to make vue docs as soon as possible
 
 ## Usage
 

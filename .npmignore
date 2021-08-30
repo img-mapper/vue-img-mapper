@@ -2,10 +2,11 @@
 .idea
 public
 src
-.browserlistrc
+index.html
+.browserslistrc
 .eslintcache
 .eslintignore
-.eslintrc.js
+.eslintrc
 .prettierrc
 yarn-error.log
-babel.config.js
+vite.config.js
