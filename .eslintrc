@@ -7,13 +7,14 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-recommended",
     "prettier"
   ],
   "plugins": [
     "prettier"
   ],
   "rules": {
+    "prettier/prettier": "error",
     "no-console": "off",
     "no-debugger": "off"
   }
