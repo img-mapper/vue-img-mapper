@@ -16,7 +16,7 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import { mouseMove, mouseDown, mouseUp, touchStart, touchEnd } from './Events';
 
 export default {

@@ -1,3 +1,5 @@
+import { Obj } from './Types';
+
 const absPos = {
   position: 'absolute',
   top: 0,
@@ -26,6 +28,7 @@ export const canvas = {
   zIndex: 2,
 };
 
-export const img = responsive => (responsive ? imgResponsive : imgNonResponsive);
+export const img = (responsive: boolean): Obj => (responsive ? imgResponsive : imgNonResponsive);
 
-export const map = onClick => (onClick && { cursor: 'pointer' }) || undefined;
+export const map = (onClick: boolean): Obj | undefined =>
+  (onClick && { cursor: 'pointer' }) || undefined;

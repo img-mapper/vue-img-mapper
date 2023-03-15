@@ -1,4 +1,7 @@
-export const imageMouseMove = (event, props) => {
+import { ComponentPublicInstance } from 'vue';
+import { AreaEvent, AreaTouchEvent, CustomArea } from './Types';
+
+export const imageMouseMove = (event: AreaEvent, props: ComponentPublicInstance): void => {
   if (props.$attrs.onImageMouseMove) {
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -6,7 +9,7 @@ export const imageMouseMove = (event, props) => {
   }
 };
 
-export const imageClick = (event, props) => {
+export const imageClick = (event: AreaEvent, props: ComponentPublicInstance): void => {
   if (props.$attrs.onImageClick) {
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -14,7 +17,12 @@ export const imageClick = (event, props) => {
   }
 };
 
-export const mouseMove = (area, index, event, props) => {
+export const mouseMove = (
+  area: CustomArea,
+  index: number,
+  event: AreaEvent,
+  props: ComponentPublicInstance
+): void => {
   if (props.$attrs.onMousemove) {
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -22,7 +30,12 @@ export const mouseMove = (area, index, event, props) => {
   }
 };
 
-export const mouseDown = (area, index, event, props) => {
+export const mouseDown = (
+  area: CustomArea,
+  index: number,
+  event: AreaEvent,
+  props: ComponentPublicInstance
+): void => {
   if (props.$attrs.onMousedown) {
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -30,7 +43,12 @@ export const mouseDown = (area, index, event, props) => {
   }
 };
 
-export const mouseUp = (area, index, event, props) => {
+export const mouseUp = (
+  area: CustomArea,
+  index: number,
+  event: AreaEvent,
+  props: ComponentPublicInstance
+): void => {
   if (props.$attrs.onMouseup) {
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -38,7 +56,12 @@ export const mouseUp = (area, index, event, props) => {
   }
 };
 
-export const touchStart = (area, index, event, props) => {
+export const touchStart = (
+  area: CustomArea,
+  index: number,
+  event: AreaTouchEvent,
+  props: ComponentPublicInstance
+): void => {
   if (props.$attrs.onTouchstart) {
     event.preventDefault();
     event.stopImmediatePropagation();
@@ -46,7 +69,12 @@ export const touchStart = (area, index, event, props) => {
   }
 };
 
-export const touchEnd = (area, index, event, props) => {
+export const touchEnd = (
+  area: CustomArea,
+  index: number,
+  event: AreaTouchEvent,
+  props: ComponentPublicInstance
+): void => {
   if (props.$attrs.onTouchend) {
     event.preventDefault();
     event.stopImmediatePropagation();

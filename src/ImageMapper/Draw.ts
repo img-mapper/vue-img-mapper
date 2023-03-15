@@ -1,4 +1,12 @@
-const drawRect = (coords, fillColor, lineWidth, strokeColor, ctx) => {
+import { CTX } from './Types';
+
+const drawRect = (
+  coords: number[],
+  fillColor: string,
+  lineWidth: number,
+  strokeColor: string,
+  ctx: CTX
+) => {
   const [left, top, right, bot] = coords;
   ctx.fillStyle = fillColor;
   ctx.lineWidth = lineWidth;
@@ -7,7 +15,13 @@ const drawRect = (coords, fillColor, lineWidth, strokeColor, ctx) => {
   ctx.fillRect(left, top, right - left, bot - top);
 };
 
-const drawCircle = (coords, fillColor, lineWidth, strokeColor, ctx) => {
+const drawCircle = (
+  coords: number[],
+  fillColor: string,
+  lineWidth: number,
+  strokeColor: string,
+  ctx: CTX
+) => {
   ctx.fillStyle = fillColor;
   ctx.beginPath();
   ctx.lineWidth = lineWidth;
@@ -18,7 +32,13 @@ const drawCircle = (coords, fillColor, lineWidth, strokeColor, ctx) => {
   ctx.fill();
 };
 
-const drawPoly = (coords, fillColor, lineWidth, strokeColor, ctx) => {
+const drawPoly = (
+  coords: number[],
+  fillColor: string,
+  lineWidth: number,
+  strokeColor: string,
+  ctx: CTX
+) => {
   const newCoords = coords.reduce((a, v, i, s) => (i % 2 ? a : [...a, s.slice(i, i + 2)]), []);
   // const first = newCoords.unshift();
   ctx.fillStyle = fillColor;
@@ -33,8 +53,15 @@ const drawPoly = (coords, fillColor, lineWidth, strokeColor, ctx) => {
   ctx.fill();
 };
 
-export const callingFn = (shape, coords, fillColor, lineWidth, strokeColor, isAreaActive, ctx) => {
-  console.log();
+export const callingFn = (
+  shape: string,
+  coords: number[],
+  fillColor: string,
+  lineWidth: number,
+  strokeColor: string,
+  isAreaActive: boolean,
+  ctx: CTX
+): void | boolean => {
   if (shape === 'rect' && isAreaActive) {
     return drawRect(coords, fillColor, lineWidth, strokeColor, ctx);
   }

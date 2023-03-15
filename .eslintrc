@@ -3,15 +3,17 @@
     "node": true
   },
   "parserOptions": {
-    "parser": "babel-eslint"
+    "parser": "@typescript-eslint/parser"
   },
   "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:vue/vue3-recommended",
     "prettier"
   ],
   "plugins": [
-    "prettier"
+    "prettier",
+    "@typescript-eslint"
   ],
   "rules": {
     "prettier/prettier": "error",
