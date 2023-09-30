@@ -53,6 +53,7 @@ export default defineComponent({
       isRendered: false,
       imgRef: null,
       ctx: null,
+      onClick: null,
     };
   },
   computed: {
@@ -69,22 +70,32 @@ export default defineComponent({
     parentWidth() {
       if (this.responsive) this.initCanvas();
     },
+    map(newMap) {
+      this.setContextAndCache(newMap);
+      this.updateCanvasOnMapChange();
+    },
   },
-  updated() {
-    if (!this.isRendered && this.map.areas.length) {
-      this.ctx = this.$refs.canvas.getContext('2d');
-      this.updateCacheMap();
-      this.isRendered = true;
-    }
-    if (JSON.stringify(this.mapState) === JSON.stringify(this.map)) {
-      this.updateCacheMap();
-      this.initCanvas();
-      this.updateCanvas();
-    }
+  mounted() {
+    this.setContextAndCache(this.map);
+    this.updateCanvasOnMapChange();
   },
   methods: {
     imageMouseMove,
     imageClick,
+    setContextAndCache(map) {
+      if (!this.isRendered && map.areas.length) {
+        this.ctx = this.$refs.canvas.getContext('2d');
+        this.updateCacheMap();
+        this.isRendered = true;
+      }
+    },
+    updateCanvasOnMapChange() {
+      if (JSON.stringify(this.mapState) === JSON.stringify(this.map)) {
+        this.updateCacheMap();
+        this.initCanvas();
+        this.updateCanvas();
+      }
+    },
     clearHighlightedArea() {
       this.mapState = this.storedMap;
       this.initCanvas();
