@@ -1,3 +1,6 @@
+> [!Warning]
+> This project has been deprecated. We’ve moved to img-mapper, which you can find here: https://github.com/img-mapper/img-mapper.
+
 # Vue Img Mapper
 
 Vue Component to highlight interactive zones in images
